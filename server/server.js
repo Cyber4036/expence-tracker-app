@@ -1,10 +1,14 @@
 // server/server.js
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 5001; // Using 5001 to avoid potential conflict with frontend
 
+app.use(cors()); // Enable CORS for all routes and origins
+
 // Middleware to parse JSON bodies
 app.use(express.json());
+
 // Basic route for the root path
 
 app.get('/', (req, res) => {
