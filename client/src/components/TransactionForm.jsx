@@ -1,46 +1,107 @@
-// client/src/components/TransactionForm.jsx
 import { useState } from 'react';
-import { addTransaction } from '../api';
 
-export default function TransactionForm({ onAdd }) {
-  const [formData, setFormData] = useState({
-    title: '',
-    amount: '',
-    date: '',
-    category: '',
-  });
-
-  const handleChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+function TransactionForm({ onAdd }) {
+  const [title, setTitle] = useState('');
+  const [amount, setAmount] = useState('');
+  const [date, setDate] = useState('');
+  const [category, setCategory] = useState('');
+  const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { title, amount, date, category } = formData;
-    if (!title || !amount || !date) return alert('Please fill required fields');
+
+    if (!title || !amount || !date) {
+      setError('Please fill in all required fields.');
+      return;
+    }
+
+    const newTransaction = {
+      title,
+      amount: parseFloat(amount),
+      date,
+      category,
+    };
+
     try {
-      const transaction = await addTransaction({
-        title,
-        amount: parseFloat(amount),
-        date,
-        category,
+      const res = await fetch('http://localhost:5001/api/transactions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newTransaction),
       });
-      onAdd(transaction);
-      setFormData({ title: '', amount: '', date: '', category: '' });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        setError(errorData.message || 'Failed to add transaction.');
+        return;
+      }
+
+      const data = await res.json();
+      onAdd(data);
+
+      // Clear form
+      setTitle('');
+      setAmount('');
+      setDate('');
+      setCategory('');
+      setError(null);
     } catch (err) {
-      alert(err.message);
+      console.error('Error adding transaction:', err);
+      setError('Network error. Try again.');
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input name="title" value={formData.title} onChange={handleChange} placeholder="Title" />
-      <input name="amount" value={formData.amount} onChange={handleChange} placeholder="Amount" type="number" />
-      <input name="date" value={formData.date} onChange={handleChange} type="date" />
-      <input name="category" value={formData.category} onChange={handleChange} placeholder="Category" />
-      <button type="submit">Add Transaction</button>
+    <form onSubmit={handleSubmit} className="space-y-4 bg-white dark:bg-gray-800 p-4 rounded shadow">
+      <h2 className="text-xl font-semibold">Add Transaction</h2>
+
+      {error && (
+        <div className="bg-red-100 text-red-700 p-2 rounded text-sm">
+          {error}
+        </div>
+      )}
+
+      <div className="grid gap-2">
+        <input
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="Title"
+          required
+          className="p-2 rounded border dark:bg-gray-700 dark:border-gray-600"
+        />
+        <input
+          type="number"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          placeholder="Amount"
+          required
+          className="p-2 rounded border dark:bg-gray-700 dark:border-gray-600"
+        />
+        <input
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+          required
+          className="p-2 rounded border dark:bg-gray-700 dark:border-gray-600"
+        />
+        <input
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          placeholder="Category (optional)"
+          className="p-2 rounded border dark:bg-gray-700 dark:border-gray-600"
+        />
+      </div>
+
+      <button
+        type="submit"
+        className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+      >
+        Add Transaction
+      </button>
     </form>
   );
 }
+
+export default TransactionForm;
 
 
 
