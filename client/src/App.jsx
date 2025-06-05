@@ -36,6 +36,11 @@ function App() {
     setTransactions((prev) => [newTx, ...prev]);
   };
 
+  const handleDelete = (id) => {
+  setTransactions((prev) => prev.filter((tx) => tx._id !== id));
+};
+
+
   const filtered = transactions.filter((tx) => {
     const matchCategory = categoryFilter
       ? tx.category?.toLowerCase().includes(categoryFilter.toLowerCase())
@@ -89,6 +94,8 @@ function App() {
         )}
 
         <TransactionForm onAdd={handleAdd} />
+        <DashboardSummary transactions={sorted} />
+        <TransactionChart transactions={sorted} />
 
         {/* Filters */}
         <div className="flex flex-col sm:flex-row gap-4">
@@ -105,18 +112,19 @@ function App() {
             onChange={(e) => setDateFilter(e.target.value)}
             className="p-2 rounded border dark:bg-gray-800 dark:border-gray-600 w-full"
           />
-
-          {/* Export to CSV */}
-        <button
-          onClick={() => exportToCSV(sorted)}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-600"
-        >
-          Export CSV
-        </button>
+          
         </div>
+
+        
 
         {/* Sort */}
         <div className="flex justify-end">
+          <button
+            onClick={() => exportToCSV(sorted, 'transactions.csv')}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded justify-end-safe"
+          >
+            Export to CSV
+          </button>
           <select
             value={sortOption}
             onChange={(e) => setSortOption(e.target.value)}
@@ -128,9 +136,9 @@ function App() {
             <option value="low">Lowest Amount</option>
           </select>
         </div>
-        <DashboardSummary transactions={sorted} />
-        <TransactionChart transactions={sorted} />
-        <TransactionList transactions={sorted} />
+        
+        <TransactionList transactions={sorted} onDelete={handleDelete} />
+        
       </div>
     </div>
   );

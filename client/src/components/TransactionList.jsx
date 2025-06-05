@@ -1,4 +1,17 @@
-function TransactionList({ transactions }) {
+import { deleteTransaction } from '../api';
+
+function TransactionList({ transactions, onDelete }) {
+  const handleDelete = async (id) => {
+    if (!confirm('Are you sure you want to delete this transaction?')) return;
+    try {
+      await deleteTransaction(id);
+      onDelete(id); // Notify parent to remove from state
+    } catch (err) {
+      console.error('Delete failed:', err);
+      alert('Failed to delete transaction.');
+    }
+  };
+
   return (
     <div className="bg-white dark:bg-gray-800 p-4 rounded shadow space-y-4">
       <h2 className="text-xl font-semibold">Transaction History</h2>
@@ -20,6 +33,12 @@ function TransactionList({ transactions }) {
                 {tx.category || 'Uncategorized'} • ${tx.amount} •{' '}
                 {new Date(tx.date).toLocaleDateString()}
               </div>
+              <button
+                onClick={() => handleDelete(tx._id)}
+                className="text-sm px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+              >
+                Delete
+              </button>
             </li>
           ))
         )}

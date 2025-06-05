@@ -1,0 +1,10 @@
+curl -X POST \
+     -H "Content-Type: application/json" \
+     -d '{
+  "title": "Grocery",
+  "amount": -40,
+  "date": "2025-06-04",
+  "category": "Food"
+}
+' \
+     http://localhost:5001/api/transactions

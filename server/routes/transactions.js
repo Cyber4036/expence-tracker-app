@@ -34,4 +34,16 @@ router.get('/', async (req, res) => {
   }
 });
 
+// DELETE /api/transactions/:id - Delete a transaction
+router.delete('/:id', async (req, res) => {
+  try {
+    const deleted = await Transaction.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ error: 'Transaction not found' });
+    res.json({ message: 'Transaction deleted' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 module.exports = router;
