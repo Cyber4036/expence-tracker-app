@@ -3,9 +3,12 @@ import './App.css'; // Keep if you need custom styles
 import { getTransactions } from './api';
 import TransactionForm from './components/TransactionForm';
 import TransactionList from './components/TransactionList';
+import DashboardSummary from './components/DashboardSummary';
 
 function App() {
   const [transactions, setTransactions] = useState([]);
+  const [categoryFilter, setCategoryFilter] = useState('');
+  const [dateFilter, setDateFilter] = useState('');
   const [darkMode, setDarkMode] = useState(false);
   const [error, setError] = useState(null);
 
@@ -26,6 +29,18 @@ function App() {
   const handleAdd = (newTx) => {
     setTransactions((prev) => [newTx, ...prev]);
   };
+
+  const filtered = transactions.filter((tx) => {
+    const matchCategory = categoryFilter
+      ? tx.category?.toLowerCase().includes(categoryFilter.toLowerCase())
+      : true;
+
+    const matchDate = dateFilter
+      ? new Date(tx.date).toISOString().slice(0, 10) === dateFilter
+      : true;
+
+    return matchCategory && matchDate;
+  });
 
   const toggleTheme = () => {
     setDarkMode(!darkMode);
@@ -52,7 +67,26 @@ function App() {
         )}
 
         <TransactionForm onAdd={handleAdd} />
-        <TransactionList transactions={transactions} />
+
+        {/* Filters */}
+        <div className="flex flex-col sm:flex-row gap-4">
+          <input
+            type="text"
+            placeholder="Filter by category"
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+            className="p-2 rounded border dark:bg-gray-800 dark:border-gray-600 w-full"
+          />
+          <input
+            type="date"
+            value={dateFilter}
+            onChange={(e) => setDateFilter(e.target.value)}
+            className="p-2 rounded border dark:bg-gray-800 dark:border-gray-600 w-full"
+          />
+        </div>
+
+        <DashboardSummary transactions={filtered} />
+        <TransactionList transactions={filtered} />
       </div>
     </div>
   );
