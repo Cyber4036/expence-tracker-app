@@ -31,11 +31,7 @@ app.use(cors({
 // Middleware to parse JSON bodies
 app.use(express.json());
 
-// Use the transaction routes
-// Make sure './routes/transactions' actually exists and is named 'transactions.js'
-// If it's 'transaction.js' (singular), adjust the path here:
-// const transactionRoutes = require('./routes/transaction'); // Corrected path if singular
-const transactionRoutes = require('./routes/transaction'); // Assuming you fixed it to singular based on earlier debug
+const transactionRoutes = require('./routes/transactions'); 
 
 app.use('/api/transactions', transactionRoutes); // This mounts the routes under /api/transactions
 
