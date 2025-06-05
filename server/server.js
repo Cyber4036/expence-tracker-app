@@ -8,9 +8,8 @@ require('dotenv').config();
 // IMPORTANT: Configure CORS for specific origins in production
 const allowedOrigins = [
   'http://localhost:5173', // Your frontend local development URL
-  // Remove the trailing slash here: 'https://fascinating-mermaid-361146.netlify.app/'
-  // Browsers send the origin *without* a trailing slash.
-  'https://fascinating-mermaid-361146.netlify.app', // <-- CORRECTED: No trailing slash
+
+  'https://fascinating-mermaid-361146.netlify.app', 
 ];
 
 app.use(cors({
