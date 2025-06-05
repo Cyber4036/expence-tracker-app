@@ -1,5 +1,5 @@
 // client/src/api.js
-const BASE_URL = '/api'; // Use relative path for Vite proxy
+const BASE_URL = 'https://xpence-tracker-app.onrender.com'; // Use relative path for Vite proxy
 
 export async function getTransactions() {
   const res = await fetch(`${BASE_URL}/transactions`);
