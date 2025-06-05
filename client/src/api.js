@@ -1,19 +1,16 @@
 // client/src/api.js
 
 // The BASE_URL should point to the root of your *backend API*, including the /api prefix.
-// Make sure this exactly matches your Render service URL + the /api prefix you use in server.js.
-// Example: https://xpence-tracker-app.onrender.com/api
+
 const BASE_URL = 'https://xpence-tracker-app.onrender.com/api'; // <-- CORRECTED: Added /api
 
 
 export async function getTransactions() {
-  const res = await fetch(`${BASE_URL}/transactions`); // Now correctly hits /api/transactions
+  const res = await fetch(`${BASE_URL}/transactions`); 
   // It's good practice to parse the JSON and check for a 'success' or 'data' property
   // if your backend consistently wraps responses.
   const data = await res.json();
   if (!res.ok) {
-    // If your backend sends error messages in the JSON, you can throw that.
-    // For now, a generic error message is fine.
     throw new Error(data.message || 'Failed to fetch transactions');
   }
   // Assuming your backend response is { success: true, count: X, data: [...] }
@@ -21,7 +18,7 @@ export async function getTransactions() {
 }
 
 export async function addTransaction(transaction) {
-  const res = await fetch(`${BASE_URL}/transactions`, { // Correctly hits /api/transactions
+  const res = await fetch(`${BASE_URL}/transactions`, { 
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -39,7 +36,7 @@ export async function addTransaction(transaction) {
 
 export const deleteTransaction = async (id) => {
   // Use the consistent BASE_URL for consistency and correctness
-  const res = await fetch(`${BASE_URL}/transactions/${id}`, { // Correctly hits /api/transactions/:id
+  const res = await fetch(`${BASE_URL}/transactions/${id}`, {
     method: 'DELETE',
   });
 
