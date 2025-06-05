@@ -17,7 +17,7 @@ export async function getTransactions() {
     throw new Error(data.message || 'Failed to fetch transactions');
   }
   // Assuming your backend response is { success: true, count: X, data: [...] }
-  return res.json(); // <--- IMPORTANT: Access the actual array
+  return data; // <--- IMPORTANT: Access the actual array
 }
 
 export async function addTransaction(transaction) {
