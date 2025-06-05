@@ -115,3 +115,7 @@ yarn dev
 
 The frontend will start on `http://localhost:5173` (or another available port). Your browser should automatically open the application.
 
+
+Here's the link to the deployed Web-App ``` https://fascinating-mermaid-361146.netlify.app ```
+
+
