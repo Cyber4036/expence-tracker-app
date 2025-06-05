@@ -4,11 +4,17 @@ import { getTransactions } from './api';
 import TransactionForm from './components/TransactionForm';
 import TransactionList from './components/TransactionList';
 import DashboardSummary from './components/DashboardSummary';
+import TransactionChart from './components/TransactionChart';
+import { exportToCSV } from './utils/exportToCSV';
+
+
 
 function App() {
   const [transactions, setTransactions] = useState([]);
   const [categoryFilter, setCategoryFilter] = useState('');
   const [dateFilter, setDateFilter] = useState('');
+  const [sortOption, setSortOption] = useState('newest');
+  //const [searchTerm, setSearchTerm] = useState('');
   const [darkMode, setDarkMode] = useState(false);
   const [error, setError] = useState(null);
 
@@ -41,6 +47,22 @@ function App() {
 
     return matchCategory && matchDate;
   });
+
+  const sorted = [...filtered].sort((a, b) => {
+  switch (sortOption) {
+    case 'newest':
+      return new Date(b.date) - new Date(a.date);
+    case 'oldest':
+      return new Date(a.date) - new Date(b.date);
+    case 'high':
+      return b.amount - a.amount;
+    case 'low':
+      return a.amount - b.amount;
+    default:
+      return 0;
+  }
+});
+
 
   const toggleTheme = () => {
     setDarkMode(!darkMode);
@@ -83,10 +105,32 @@ function App() {
             onChange={(e) => setDateFilter(e.target.value)}
             className="p-2 rounded border dark:bg-gray-800 dark:border-gray-600 w-full"
           />
+
+          {/* Export to CSV */}
+        <button
+          onClick={() => exportToCSV(sorted)}
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-600"
+        >
+          Export CSV
+        </button>
         </div>
 
-        <DashboardSummary transactions={filtered} />
-        <TransactionList transactions={filtered} />
+        {/* Sort */}
+        <div className="flex justify-end">
+          <select
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value)}
+            className="p-2 rounded border dark:bg-gray-800 dark:border-gray-600"
+          >
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="high">Highest Amount</option>
+            <option value="low">Lowest Amount</option>
+          </select>
+        </div>
+        <DashboardSummary transactions={sorted} />
+        <TransactionChart transactions={sorted} />
+        <TransactionList transactions={sorted} />
       </div>
     </div>
   );
