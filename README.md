@@ -9,7 +9,6 @@ A simple web application to track your income and expenses, built with the MERN 
 *   **Categorize Spending:** Assign categories to expenses for better tracking.
 *   **Visual Charts:** View a bar chart summarizing spending by category.
 *   **Dark Mode:** Toggle between light and dark themes for comfortable viewing.
-*   **Responsive Design:** Usable on different screen sizes.
 
 ## Tech Stack
 
@@ -27,7 +26,7 @@ A simple web application to track your income and expenses, built with the MERN 
 
 1.  **Clone the repository:**
     ```bash
-    git clone <your-repository-url>
+    git clone https://github.com/Cyber4036/expence-tracker-app.git
     cd expense-tracker-app
     ```
 
@@ -64,27 +63,8 @@ A simple web application to track your income and expenses, built with the MERN 
 4.  **Access the application:**
     Open your browser and navigate to the URL provided by the Vite development server (e.g., `http://localhost:5173`).
 
-## Screenshots / Demo Suggestions
 
-To showcase the application, consider including the following:
 
-1.  **Main Interface:**
-    *   Screenshot of the main page showing the transaction form, the list of transactions, and the dark mode toggle.
-    *   Highlight both light and dark modes.
-2.  **Adding a Transaction:**
-    *   A short GIF or a series of screenshots showing the process of filling out the transaction form and submitting it.
-    *   Show the new transaction appearing in the list.
-3.  **Transaction List:**
-    *   Screenshot focusing on the transaction list, showing different types (income/expense) and categories.
-4.  **Spending Chart:**
-    *   Screenshot of the "Spending by Category" bar chart, populated with some sample expense data.
-5.  **Responsive Design (Optional but good):**
-    *   Screenshots of the app on a simulated mobile view to demonstrate responsiveness.
 
-**Example Demo Flow:**
-*   Start with an empty transaction list.
-*   Add a few income transactions.
-*   Add several expense transactions across different categories.
-*   Show the transaction list updating.
-*   Show the spending chart reflecting the categorized expenses.
-*   Toggle dark mode.
+
+
